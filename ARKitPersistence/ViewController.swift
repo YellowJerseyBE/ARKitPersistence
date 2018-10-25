@@ -59,7 +59,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.debugOptions = [.showFeaturePoints]
         sceneView.session.run(configuration, options: options)
         
-        setUpLabelTextAndSaveButton(text: "Move the camera around to detect surfaces", isPositive: false)
+        setUpLabelsAndButtons(text: "Move the camera around to detect surfaces", isPositive: false)
     }
     
     func addTapGestureRecognizer() {
@@ -72,16 +72,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     func setupUI() {
-        setUpLabelTextAndSaveButton(text: "Move the camera around to detect surfaces", isPositive: false)
+        setUpLabelsAndButtons(text: "Move the camera around to detect surfaces", isPositive: false)
         loadButton.layer.cornerRadius = 10
         saveButton.layer.cornerRadius = 10
         clearButton.layer.cornerRadius = 10
     }
     
-    func setUpLabelTextAndSaveButton(text: String, isPositive: Bool) {
+    func setUpLabelsAndButtons(text: String, isPositive: Bool) {
         self.infoLabel.text = text
         self.infoLabel.textColor = isPositive ? .green : .red
-        self.saveButton.isUserInteractionEnabled = isPositive
     }
     
     func showAlert(message: String) {
