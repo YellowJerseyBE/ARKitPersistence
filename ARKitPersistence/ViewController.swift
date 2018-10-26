@@ -110,6 +110,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
+        resetTrackingConfiguration()
     }
     
     @IBAction func saveButtonAction(_ sender: Any) {

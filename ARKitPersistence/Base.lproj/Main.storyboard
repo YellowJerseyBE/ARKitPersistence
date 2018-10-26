@@ -37,6 +37,9 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Reset"/>
+                                        <connections>
+                                            <action selector="resetButtonAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="dnC-lY-cLA"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qFe-9h-qnt">
                                         <rect key="frame" x="242" y="0.0" width="101" height="40"/>
