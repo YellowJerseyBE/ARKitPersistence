@@ -36,10 +36,7 @@
                                         <rect key="frame" x="121" y="0.0" width="101" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" title="Clear"/>
-                                        <connections>
-                                            <action selector="clearButtonAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="RvQ-PI-7Cp"/>
-                                        </connections>
+                                        <state key="normal" title="Reset"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qFe-9h-qnt">
                                         <rect key="frame" x="242" y="0.0" width="101" height="40"/>
@@ -83,9 +80,9 @@
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
-                        <outlet property="clearButton" destination="TJy-Jj-cD9" id="c7p-5R-CGn"/>
                         <outlet property="infoLabel" destination="yad-rR-V4b" id="6yf-XO-Cds"/>
                         <outlet property="loadButton" destination="A4F-Ni-kDt" id="48E-Qb-HX5"/>
+                        <outlet property="resetButton" destination="TJy-Jj-cD9" id="4Kn-9t-MgB"/>
                         <outlet property="saveButton" destination="qFe-9h-qnt" id="Iz0-ng-Ql9"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
                     </connections>

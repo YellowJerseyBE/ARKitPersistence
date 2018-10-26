@@ -15,7 +15,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var loadButton: UIButton!
-    @IBOutlet weak var clearButton: UIButton!
+    @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
     
     override func viewDidLoad() {
@@ -89,7 +89,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         setUpLabelsAndButtons(text: "Move the camera around to detect surfaces", canShowSaveButton: false)
         loadButton.layer.cornerRadius = 10
         saveButton.layer.cornerRadius = 10
-        clearButton.layer.cornerRadius = 10
+        resetButton.layer.cornerRadius = 10
     }
     
     func setUpLabelsAndButtons(text: String, canShowSaveButton: Bool) {
@@ -109,7 +109,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     @IBAction func loadButtonAction(_ sender: Any) {
     }
     
-    @IBAction func clearButtonAction(_ sender: Any) {
+    @IBAction func resetButtonAction(_ sender: Any) {
     }
     
     @IBAction func saveButtonAction(_ sender: Any) {
