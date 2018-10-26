@@ -24,6 +24,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         // Set the view's delegate
         sceneView.delegate = self
         
+        // set session delegate
+        self.sceneView.session.delegate = self
+        
         // Create a new scene
         let scene = SCNScene()
         
