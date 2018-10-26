@@ -18,6 +18,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
     
+    var worldMapURL: URL = {
+        do {
+            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                .appendingPathComponent("worldMapURL")
+        } catch {
+            fatalError("Error getting world map URL from document directory.")
+        }
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -107,6 +116,22 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     // MARK: - Button Actions
     
     @IBAction func loadButtonAction(_ sender: Any) {
+        guard let mapData = try? Data(contentsOf: self.worldMapURL), let worldMap = try? NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: mapData) else {
+            fatalError("No ARWorldMap in archive.")
+        }
+        
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = [.horizontal]
+        
+        let options: ARSession.RunOptions = [.resetTracking, .removeExistingAnchors]
+        if let worldMap = worldMap {
+            configuration.initialWorldMap = worldMap
+            showAlert(message: "Map Loaded")
+        } else {
+            setUpLabelsAndButtons(text: "Move the camera around to detect surfaces", canShowSaveButton: false)
+        }
+        sceneView.debugOptions = [.showFeaturePoints]
+        sceneView.session.run(configuration, options: options)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
@@ -114,6 +139,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     @IBAction func saveButtonAction(_ sender: Any) {
+        sceneView.session.getCurrentWorldMap { (worldMap, error) in
+            guard let worldMap = worldMap else {
+                self.setUpLabelsAndButtons(text: "Can't get current world map", canShowSaveButton: false)
+                self.showAlert(message: error!.localizedDescription)
+                return
+            }
+            do {
+                let data = try NSKeyedArchiver.archivedData(withRootObject: worldMap, requiringSecureCoding: true)
+                try data.write(to: self.worldMapURL, options: [.atomic])
+                self.showAlert(message: "Map Saved")
+            } catch {
+                fatalError("Can't save map: \(error.localizedDescription)")
+            }
+        }
     }
     
     // MARK: - ARSCNViewDelegate
