@@ -59,7 +59,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.debugOptions = [.showFeaturePoints]
         sceneView.session.run(configuration, options: options)
         
-        setUpLabelsAndButtons(text: "Move the camera around to detect surfaces", isPositive: false)
+        setUpLabelsAndButtons(text: "Move the camera around to detect surfaces", canShowSaveButton: false)
+    }
+    
+    func generateSphereNode() -> SCNNode {
+        let sphere = SCNSphere(radius: 0.05)
+        let sphereNode = SCNNode()
+        sphereNode.geometry = sphere
+        return sphereNode
     }
     
     func addTapGestureRecognizer() {
@@ -68,19 +75,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     @objc func tapGestureRecognized(recognizer :UITapGestureRecognizer) {
-        
+        let touchLocation = recognizer.location(in: sceneView)
+        guard let hitTestResult = sceneView.hitTest(touchLocation, types: .existingPlane).first
+            else { return }
+        let anchor = ARAnchor(transform: hitTestResult.worldTransform)
+        sceneView.session.add(anchor: anchor)
     }
     
     func setupUI() {
-        setUpLabelsAndButtons(text: "Move the camera around to detect surfaces", isPositive: false)
+        setUpLabelsAndButtons(text: "Move the camera around to detect surfaces", canShowSaveButton: false)
         loadButton.layer.cornerRadius = 10
         saveButton.layer.cornerRadius = 10
         clearButton.layer.cornerRadius = 10
     }
     
-    func setUpLabelsAndButtons(text: String, isPositive: Bool) {
+    func setUpLabelsAndButtons(text: String, canShowSaveButton: Bool) {
         self.infoLabel.text = text
-        self.infoLabel.textColor = isPositive ? .green : .red
+        self.saveButton.isEnabled = canShowSaveButton
     }
     
     func showAlert(message: String) {
@@ -104,12 +115,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     // MARK: - ARSCNViewDelegate
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        
+        guard !(anchor is ARPlaneAnchor) else { return }
+        let sphereNode = generateSphereNode()
+        DispatchQueue.main.async {
+            node.addChildNode(sphereNode)
+        }
     }
     
     // MARK: - ARSessionDelegate
-    
+    //shows the current status of the world map.
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        
+        switch frame.worldMappingStatus {
+        case .notAvailable:
+            setUpLabelsAndButtons(text: "Map Status: Not available", canShowSaveButton: false)
+        case .limited:
+            setUpLabelsAndButtons(text: "Map Status: Available but has Limited features", canShowSaveButton: false)
+        case .extending:
+            setUpLabelsAndButtons(text: "Map Status: Actively extending the map", canShowSaveButton: false)
+        case .mapped:
+            setUpLabelsAndButtons(text: "Map Status: Mapped the visible Area", canShowSaveButton: true)
+        }
     }
 }
